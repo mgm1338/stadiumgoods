@@ -1,13 +1,9 @@
 <?php
     
     include_once "simple_html_dom.php";
-    
     include_once 'helpers.php';
     
-    /**
-     *   PHP Challenge entry
-     */
-    
+   
     const PAGE_SIZE = 96;
     
     
@@ -32,13 +28,11 @@
         }
         
         
-        
-        
         $data = curlToDOM($url);
         $pageCt=0;
         
         
-        //get the total number of pages
+        //get the total number of pages for a filter
         foreach($data->find('div.toolbar > div.category-count > h5') as $r)
         {
             $rangeHeader = $r->innertext;
@@ -56,15 +50,20 @@
         
         $products = array();
         $price = array();
-        //header
-        echo "Product Name, Price\n";
+        
+        
         
         //cycle through each page, getting the shoes for each page
         for ($i = 1; $i <= $pageCt; $i++)
         {
-            $composed_url = $url . "/page/$i";
-            $data = curlToDOM($composed_url);
-    
+            //only print header if we have enter the for loop
+            if ($i==1)
+            {
+                echo "Product Name, Price\n";
+            }
+            
+            $composedUrl = $url . "/page/$i";
+            $data = curlToDOM($composedUrl);
     
             foreach ($data->find('.product-info > .product-name > a') as $item)
             {
@@ -87,11 +86,4 @@
         }
             
     }
-    
-    
-    
-    
-    
-    
-    
     
